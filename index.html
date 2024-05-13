@@ -52,11 +52,8 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js";
-  import { getMessaging } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-messaging.js"; // Added getToken import
     console.log("changes reflected");
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -73,13 +70,14 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const messaging = getMessaging();
-  getToken(messaging, {vapidKey: "BKqGXOlCy6dwEnIXJX0PqpkqgFlbqBgLzRE2Lo2L_htLyp5RcBfXoD5AidMFg667k00VZx7tmO4Bfs_StUs1qbs"});
+  
+  // Define requestPermission function
   function requestPermission() {
     console.log('Requesting permission...');
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
-        getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
+        getToken(messaging, { vapidKey: "BKqGXOlCy6dwEnIXJX0PqpkqgFlbqBgLzRE2Lo2L_htLyp5RcBfXoD5AidMFg667k00VZx7tmO4Bfs_StUs1qbs" }).then((currentToken) => {
           if (currentToken) {
             console.log("getToken", currentToken);
           } else {
@@ -88,9 +86,11 @@
       }).catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
       });
-  })
-}
-requestPermission();
+    })
+  }
+
+  requestPermission();
 </script>
+
 </body>
 </html>
