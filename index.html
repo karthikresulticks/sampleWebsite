@@ -72,6 +72,23 @@
   const analytics = getAnalytics(app);
   const messaging = getMessaging();
   getToken(messaging, {vapidKey: "BKqGXOlCy6dwEnIXJX0PqpkqgFlbqBgLzRE2Lo2L_htLyp5RcBfXoD5AidMFg667k00VZx7tmO4Bfs_StUs1qbs"});
+  function requestPermission() {
+    console.log('Requesting permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        getToken(messaging, { vapidKey: '<YOUR_PUBLIC_VAPID_KEY_HERE>' }).then((currentToken) => {
+          if (currentToken) {
+            console.log("getToken", currentToken);
+          } else {
+            console.log('No registration token available. Request permission to generate one.');
+          }
+      }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      });
+  })
+}
+requestPermission();
 </script>
 </body>
 </html>
